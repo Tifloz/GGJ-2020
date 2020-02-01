@@ -38,7 +38,7 @@ public class BaseEntity : MonoBehaviour
     {
         return isGrounded || !hasDoubleJumped;
     }
-
+    
     protected bool Jump()
     {
         bool jump = false;
@@ -53,7 +53,24 @@ public class BaseEntity : MonoBehaviour
 
         return jump;
     }
+    protected bool CanZap()
+    {
+        return isGrounded || !hasDoubleJumped;
+    }
+    protected bool Zap()
+    {
+        bool zap = false;
 
+        if (CanZap())
+        {
+            zap = true;
+            if (!isGrounded)
+                hasDoubleJumped = true;
+            //TODO:ZAP function
+        }
+
+        return zap;
+    }
     protected void Move(float moveDirection)
     {
         if (_isAlive)
