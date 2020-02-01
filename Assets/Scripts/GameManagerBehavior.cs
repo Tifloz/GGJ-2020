@@ -5,18 +5,17 @@ using UnityEngine.UI;
 
 public class GameManagerBehavior : MonoBehaviour
 {
-    public Text goldLabel;
+    /*public Text goldLabel;
     public Text waveLabel;
     public Text healthLabel;
     public Text UpgradeLabel;
     public Text sellLabel;
-    public List<BaseTower> BaseTowerList;
-    public GameObject CanvasTower;
+    public GameObject CanvasTower;*/
     public bool gameOver = false;
 
     private int gold;
 
-    public int Gold
+ /*   public int Gold
     {
         get { return gold; }
         set
@@ -95,27 +94,11 @@ public class GameManagerBehavior : MonoBehaviour
         Gold = 20;
         Wave = 0;
         Health = 100;
-        for (int idx = 0; idx < BaseTowerList.Count; idx += 1)
-        {
-            BaseTower tower = Instantiate(BaseTowerList[idx]);
-            GameObject template = Instantiate(Resources.Load("Prefabs/TowerTemplate") as GameObject);
-            int tmp = idx + 1;
-            template.name = "Tower" + tmp.ToString();
-            template.transform.SetParent(CanvasTower.transform);
-            template.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 30 + idx * 60, 0);
-            GameObject name = template.transform.Find("Name").gameObject;
-            name.GetComponent<Text>().text = tower.GetName() + " : " + tmp.ToString();
-            GameObject price = template.transform.Find("Price").gameObject;
-            price.GetComponent<Text>().text = tower.GetLevelUpPrice() + " Credits";
-            GameObject image = template.transform.Find("Image").gameObject;
-            Image i = image.GetComponent<Image>();
-            i.color = tower.GetBaseSprite().color;
-            Destroy(tower.gameObject);
-        }
     }
 
 // Update is called once per frame
     void Update()
     {
     }
+    */
 }

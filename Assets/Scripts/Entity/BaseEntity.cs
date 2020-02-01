@@ -5,29 +5,29 @@ using UnityEngine;
 public class BaseEntity : MonoBehaviour
 {
     protected float speed = 1f;
-    protected Rigidbody rb;
+    protected Rigidbody2D rb;
     protected bool isGrounded = false;
     protected bool hasDoubleJumped = false;
     public int _max_health;
     protected int _health;
     protected GameObject _healthBar;
     protected Animator _anim;
-    protected Collider _collider;
+    protected Collider2D _collider;
     protected GameManagerBehavior gameManager;
     public bool _isAlive = true;
     protected bool _isInHighlight = false;
     protected Light _highlighter;
     protected SpriteRenderer _sprite;
-
+    public float jumpForce;
     // Use this for initialization
     protected virtual void Awake()
     {
         _health = _max_health;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManagerBehavior>();
-        rb = GetComponent<Rigidbody>();
-        GetHealthBar();
+        rb = GetComponent<Rigidbody2D>();
+       // GetHealthBar();
         _anim = gameObject.GetComponent<Animator>();
-        _collider = GetComponent<Collider>();
+        _collider = GetComponent<Collider2D>();
         _highlighter = GetComponentInChildren<Light>();
         if (_highlighter)
             _highlighter.enabled = false;
@@ -48,36 +48,22 @@ public class BaseEntity : MonoBehaviour
             jump = true;
             if (!isGrounded)
                 hasDoubleJumped = true;
-            rb.velocity = new Vector3(rb.velocity.x, 12, rb.velocity.z);
+            rb.AddForce (Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
 
         return jump;
-    }
-
-    public void ActiveHiglight()
-    {
-        _isInHighlight = true;
-        if (_highlighter)
-            _highlighter.enabled = _isInHighlight;
-    }
-
-    public void DeactiveHiglight()
-    {
-        _isInHighlight = false;
-        if (_highlighter)
-            _highlighter.enabled = false;
     }
 
     protected void Move(float moveDirection)
     {
         if (_isAlive)
         {
-            _anim.SetFloat("Move", moveDirection);
-            rb.position += Vector3.right * (moveDirection * speed / 7);
+          //  _anim.SetFloat("Move", moveDirection);
+            rb.position += Vector2.right * (moveDirection * speed / 7);
         }
     }
 
-    protected virtual void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag.Contains("solid"))
         {
@@ -93,11 +79,11 @@ public class BaseEntity : MonoBehaviour
 
         if (collision.gameObject.tag.Contains("Entity"))
         {
-            Physics.IgnoreCollision(collision.collider, _collider);
+            Physics2D.IgnoreCollision(collision.collider, _collider);
         }
     }
 
-    protected void OnCollisionExit(Collision collision)
+    protected void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.tag.Contains("solid"))
         {
@@ -105,7 +91,7 @@ public class BaseEntity : MonoBehaviour
         }
     }
 
-    protected virtual void GetHealthBar()
+    /*protected virtual void GetHealthBar()
     {
         _healthBar = Instantiate(GameObject.Find("HealthBar"));
         UnityEngine.UI.Text text = _healthBar.GetComponent<UnityEngine.UI.Text>();
@@ -115,8 +101,9 @@ public class BaseEntity : MonoBehaviour
         script.followedEntity = transform;
         script.enabled = true;
         _healthBar.transform.SetParent(GameObject.Find("Canvas").transform);
-    }
+    }*/
 
+    /*
     public void Decrease(int amount)
     {
         if (_health > amount)
@@ -130,16 +117,17 @@ public class BaseEntity : MonoBehaviour
             if (_isAlive)
             {
                 _health = 0;
-                gameManager.Gold += 1;
+               // gameManager.Gold += 1;
                 StartCoroutine(Die());
             }
         }
     }
+    */
 
     protected virtual IEnumerator Die()
     {
         _isAlive = false;
-        _anim.SetBool("Explode", true);
+       // _anim.SetBool("Explode", true);
         yield return new WaitForSeconds(0.9f);
         Destroy(gameObject);
     }
@@ -152,8 +140,4 @@ public class BaseEntity : MonoBehaviour
         }
     }
 
-    public virtual bool CanBeTarget(BaseProjectile projectile)
-    {
-        return true;
-    }
 }
