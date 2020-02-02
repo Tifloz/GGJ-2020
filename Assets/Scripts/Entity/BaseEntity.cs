@@ -57,7 +57,7 @@ public class BaseEntity : MonoBehaviour
     {
         return isGrounded || !hasDoubleJumped;
     }
-    protected bool Zap()
+    public bool Zap()
     {
         bool zap = false;
 
