@@ -50,9 +50,6 @@ public class HeroController : BaseEntity
                     StartCoroutine(WaitAndPrint());
                 }
             }
-            else
-            {
-            }
         }
     }
 
